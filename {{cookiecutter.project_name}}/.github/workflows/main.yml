@@ -44,7 +44,11 @@ jobs:
           python-version: {% raw %}${{ matrix.python-version }}{% endraw %}
 
       - name: Run tests
+{%- if cookiecutter.codecov == "y" %}
         run: poetry run pytest tests --cov --cov-config=pyproject.toml --cov-report=xml
+{%- else %}
+        run: poetry run pytest tests
+{%- endif %}
 
       - name: Check typing
         run: poetry run {{ cookiecutter.typechecking }}
