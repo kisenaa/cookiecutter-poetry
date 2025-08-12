@@ -28,7 +28,7 @@ jobs:
         run: poetry run deptry .
 
       - name: Check Poetry lock file is up to date
-        run: poetry install --check --no-root
+        run: poetry check --lock
         shell: bash
 
   tests-and-type-check:
