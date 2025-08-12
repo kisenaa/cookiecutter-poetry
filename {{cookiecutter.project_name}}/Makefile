@@ -15,7 +15,7 @@ check: ## Run code quality tools.
 	@poetry run {{ cookiecutter.typechecking }}
 {%- if cookiecutter.deptry == 'y' %}
 	@echo "🚀 Checking for obsolete dependencies: Running deptry"
-	@poetry run deptry .
+	@poetry run {% if cookiecutter.layout == "src" %}src{% else %}.{% endif %}
 {%- endif %}
 
 .PHONY: test

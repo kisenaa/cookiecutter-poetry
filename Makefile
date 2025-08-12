@@ -48,7 +48,7 @@ check: ## Run code quality tools.
 	@echo "🚀 Static type checking: Running mypy"
 	@poetry run mypy
 	@echo "🚀 Checking for obsolete dependencies: Running deptry"
-	@poetry run deptry {% if cookiecutter.layout == "src" %}"src"{% else %}.{% endif %}
+	@poetry run deptry .
 
 .PHONY: test
 test: ## Test the code with pytest.

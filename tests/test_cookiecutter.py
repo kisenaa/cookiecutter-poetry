@@ -32,6 +32,7 @@ def test_using_pytest(cookies, tmp_path):
             assert subprocess.check_call(shlex.split("poetry install --no-interaction")) == 0
             assert subprocess.check_call(shlex.split("poetry run make test")) == 0
 
+
 def test_src_layout_using_pytest(cookies, tmp_path):
     with run_within_dir(tmp_path):
         result = cookies.bake(extra_context={"layout": "src"})
@@ -47,6 +48,7 @@ def test_src_layout_using_pytest(cookies, tmp_path):
         with run_within_dir(str(result.project_path)):
             assert subprocess.check_call(shlex.split("poetry install --no-interaction")) == 0
             assert subprocess.check_call(shlex.split("poetry run make test")) == 0
+
 
 def test_devcontainer(cookies, tmp_path):
     """Test that the devcontainer files are created when devcontainer=y"""
