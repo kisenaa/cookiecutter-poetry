@@ -27,8 +27,9 @@ jobs:
       - name: Inspect dependencies
         run: poetry run deptry .
 
-      - name: Check Poetry lock file consistency
-        run: poetry lock --check
+      - name: Check Poetry lock file is up to date
+        run: poetry install --check --no-root
+        shell: bash
 
   tests-and-type-check:
     runs-on: ubuntu-latest
