@@ -27,14 +27,15 @@ jobs:
       - name: Inspect dependencies
         run: poetry run deptry .
 
-      - name: Check Poetry lock file consistency
-        run: poetry lock --check
+      - name: Check Poetry lock file is up to date
+        run: poetry check --lock
+        shell: bash
 
   tests-and-type-check:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: ["3.8", "3.9", "3.10", "3.11", "3.12"]
+        python-version: ["3.11", "3.12", "3.13"]
       fail-fast: false
     defaults:
       run:

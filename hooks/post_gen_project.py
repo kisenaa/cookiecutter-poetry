@@ -15,6 +15,10 @@ def remove_dir(filepath: str) -> None:
     shutil.rmtree(os.path.join(PROJECT_DIRECTORY, filepath))
 
 
+def move_dir(src: str, target: str) -> None:
+    shutil.move(os.path.join(PROJECT_DIRECTORY, src), os.path.join(PROJECT_DIRECTORY, target))
+
+
 if __name__ == "__main__":
     if "{{cookiecutter.include_github_actions}}" != "y":
         remove_dir(".github")
@@ -36,3 +40,8 @@ if __name__ == "__main__":
 
     if "{{cookiecutter.devcontainer}}" != "y":
         remove_dir(".devcontainer")
+
+    if "{{cookiecutter.layout}}" == "src":
+        if os.path.isdir("src"):
+            remove_dir("src")
+        move_dir("{{cookiecutter.project_slug}}", os.path.join("src", "{{cookiecutter.project_slug}}"))

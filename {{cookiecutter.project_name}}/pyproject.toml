@@ -1,17 +1,27 @@
-[tool.poetry]
+[project]
 name = "{{cookiecutter.project_slug}}"
 version = "0.0.1"
 description = "{{cookiecutter.project_description}}"
-authors = ["{{cookiecutter.author}} <{{cookiecutter.email}}>"]
-repository = "https://github.com/{{cookiecutter.author_github_handle}}/{{cookiecutter.project_name}}"
-documentation = "https://{{cookiecutter.author_github_handle}}.github.io/{{cookiecutter.project_name}}/"
+authors = [{ name = "{{cookiecutter.author}}", email = "{{cookiecutter.email}}" }]
 readme = "README.md"
-packages = [
-  {include = "{{cookiecutter.project_slug}}"}
+requires-python = ">=3.11,<4.0"
+dependencies = [
 ]
 
+[project.urls]
+Repository = "https://github.com/{{cookiecutter.author_github_handle}}/{{cookiecutter.project_name}}"
+Documentation = "https://{{cookiecutter.author_github_handle}}.github.io/{{cookiecutter.project_name}}/"
+Homepage = "https://{{cookiecutter.author_github_handle}}.github.io/"
+
+[tool.poetry]
+{% if cookiecutter.layout == "src" -%}
+packages = [{include = "{{cookiecutter.project_slug}}", from = "src"}]
+{% else %}
+packages = [{include = "{{cookiecutter.project_slug}}"}]
+{% endif %}
+
 [tool.poetry.dependencies]
-python = ">=3.8,<4.0"
+python = ">=3.11,<4.0"
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^7.2.0"
@@ -43,14 +53,20 @@ build-backend = "poetry.core.masonry.api"
 
 {% if cookiecutter.typechecking == 'mypy' -%}
 [tool.mypy]
-files = ["{{cookiecutter.project_slug}}"]
-disallow_untyped_defs = "True"
-disallow_any_unimported = "True"
-no_implicit_optional = "True"
-check_untyped_defs = "True"
-warn_return_any = "True"
-warn_unused_ignores = "True"
-show_error_codes = "True"
+files = [
+    {%- if cookiecutter.layout == "src" -%}
+    "src"
+    {%- else -%}
+    "{{cookiecutter.project_slug}}"
+    {%- endif -%}
+]
+disallow_untyped_defs = true
+disallow_any_unimported = true
+no_implicit_optional = true
+check_untyped_defs = true
+warn_return_any = true
+warn_unused_ignores = true
+show_error_codes = true
 {%- endif %}
 
 {% if cookiecutter.typechecking == 'pyright' -%}
@@ -65,7 +81,7 @@ venv = ".venv"
 testpaths = ["tests"]
 
 [tool.ruff]
-target-version = "py39"
+target-version = "py311"
 line-length = 120
 fix = true
 
@@ -118,7 +134,13 @@ skip_empty = true
 
 [tool.coverage.run]
 branch = true
-source = ["{{cookiecutter.project_slug}}"]
+source = [
+    {%- if cookiecutter.layout == "src" -%}
+    "src"
+    {%- else -%}
+    "{{cookiecutter.project_slug}}"
+    {%- endif -%}
+]
 {% endif%}
 
 [tool.ruff.lint.per-file-ignores]
