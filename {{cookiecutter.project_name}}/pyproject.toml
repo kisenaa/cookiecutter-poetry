@@ -6,9 +6,11 @@ authors = ["{{cookiecutter.author}} <{{cookiecutter.email}}>"]
 repository = "https://github.com/{{cookiecutter.author_github_handle}}/{{cookiecutter.project_name}}"
 documentation = "https://{{cookiecutter.author_github_handle}}.github.io/{{cookiecutter.project_name}}/"
 readme = "README.md"
-packages = [
-  {include = "{{cookiecutter.project_slug}}"}
-]
+{% if cookiecutter.layout == "src" -%}
+packages = [{include = "{{cookiecutter.project_slug}}", from = "src"}]
+{% else %}
+packages = [{include = "{{cookiecutter.project_slug}}"}]
+{% endif %}
 
 [tool.poetry.dependencies]
 python = ">=3.8,<4.0"
@@ -43,7 +45,13 @@ build-backend = "poetry.core.masonry.api"
 
 {% if cookiecutter.typechecking == 'mypy' -%}
 [tool.mypy]
-files = ["{{cookiecutter.project_slug}}"]
+files = [
+    {%- if cookiecutter.layout == "src" -%}
+    "src"
+    {%- else -%}
+    "{{cookiecutter.project_slug}}"
+    {%- endif -%}
+]
 disallow_untyped_defs = "True"
 disallow_any_unimported = "True"
 no_implicit_optional = "True"
@@ -118,7 +126,13 @@ skip_empty = true
 
 [tool.coverage.run]
 branch = true
-source = ["{{cookiecutter.project_slug}}"]
+source = [
+    {%- if cookiecutter.layout == "src" -%}
+    "src"
+    {%- else -%}
+    "{{cookiecutter.project_slug}}"
+    {%- endif -%}
+]
 {% endif%}
 
 [tool.ruff.lint.per-file-ignores]

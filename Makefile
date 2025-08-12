@@ -2,9 +2,14 @@
 bake: ## bake without inputs and overwrite if exists.
 	@cookiecutter --no-input . --overwrite-if-exists
 
+.PHONY: bake-src
+bake-src: ## bake without inputs and overwrite if exists.
+	@cookiecutter --no-input . --overwrite-if-exists layout="src"
+
 .PHONY: bake-with-inputs
 bake-with-inputs: ## bake with inputs and overwrite if exists.
 	@cookiecutter . --overwrite-if-exists
+
 
 .PHONY: bake-and-test-deploy
 bake-and-test-deploy: ## For quick publishing to cookiecutter-poetry-example to test GH Actions
@@ -43,7 +48,7 @@ check: ## Run code quality tools.
 	@echo "🚀 Static type checking: Running mypy"
 	@poetry run mypy
 	@echo "🚀 Checking for obsolete dependencies: Running deptry"
-	@poetry run deptry .
+	@poetry run deptry {% if cookiecutter.layout == "src" %}"src"{% else %}.{% endif %}
 
 .PHONY: test
 test: ## Test the code with pytest.
